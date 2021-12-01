@@ -15,7 +15,7 @@ ThisBuild / scalacOptions ++=
     "-Ysafe-init", // experimental (I've seen it cause issues with circe)
   ) ++ Seq("-rewrite", "-indent") ++ Seq("-source", "future")
 
-lazy val `advent-of-code` =
+lazy val adventofcode =
   project
     .in(file("."))
     .settings(name := "advent-of-code")
