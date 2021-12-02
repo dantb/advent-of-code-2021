@@ -31,3 +31,24 @@ object Day1:
           else (sum, newSum, minus2, minus1, next)
       }
       ._1
+
+  def solveAlt: Int = altSolution(readFromFile)
+  def altSolution(input: List[Int]): Int =
+    // Array might be better?
+    val size = input.size
+    var sum = 0
+    var idx = 3
+    var first = input(0)
+    var second = input(1)
+    var third = input(2)
+    var window = first + second + third
+    while (idx < size)
+      val next = input(idx)
+      val newWindow = (window - first) + next
+      if newWindow > window then sum = sum + 1
+      first = second
+      second = third
+      third = next
+      window = newWindow
+      idx = idx + 1
+    sum
