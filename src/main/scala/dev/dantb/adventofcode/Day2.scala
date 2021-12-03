@@ -4,7 +4,6 @@ package adventofcode
 import scala.io.Source
 
 object Day2:
-
   enum Command(val size: Int):
     case Forward(s: Int) extends Command(s)
     case Down(s: Int) extends Command(s)
@@ -25,8 +24,8 @@ object Day2:
   object Part1:
     final case class Position(horiz: Int, depth: Int):
       def answer: Int = horiz * depth
-      def down(steps: Int): Position = Position(horiz, depth+steps)
-      def up(steps: Int): Position = Position(horiz, depth-steps)
+      def down(steps: Int): Position = Position(horiz, depth + steps)
+      def up(steps: Int): Position = Position(horiz, depth - steps)
       def forward(steps: Int): Position = Position(horiz + steps, depth)
 
     def solve: Int = compute(readFromFile)
@@ -39,13 +38,18 @@ object Day2:
               case Command.Forward(size) => acc.forward(size)
               case Command.Down(size) => acc.down(size)
               case Command.Up(size) => acc.up(size)
-        }.answer
-  
+        }
+        .answer
+
   object Part2:
-    final case class Position(horiz: Int, depth: Int, aim: Int):
+    final case class Position(
+        horiz: Int,
+        depth: Int,
+        aim: Int,
+      ):
       def answer: Int = horiz * depth
-      def down(steps: Int): Position = Position(horiz, depth, aim+steps)
-      def up(steps: Int): Position = Position(horiz, depth, aim-steps)
+      def down(steps: Int): Position = Position(horiz, depth, aim + steps)
+      def up(steps: Int): Position = Position(horiz, depth, aim - steps)
       def forward(steps: Int): Position = Position(horiz + steps, depth + (aim * steps), aim)
 
     def solve: Int = compute(readFromFile)
@@ -58,8 +62,5 @@ object Day2:
               case Command.Forward(size) => acc.forward(size)
               case Command.Down(size) => acc.down(size)
               case Command.Up(size) => acc.up(size)
-        }.answer
-      
-
-
-
+        }
+        .answer
