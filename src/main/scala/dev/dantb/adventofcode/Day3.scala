@@ -42,7 +42,6 @@ object Day3:
   def not(str: String): String =
     str.foldLeft("")((acc, next) => if next == '1' then acc :+ '0' else acc :+ '1')
 
-
   def computePart2(input: List[String]): Int =
     val oxygenRatingString: String =
       def loop(list: List[String], idx: Int): List[String] = list match
@@ -51,7 +50,7 @@ object Day3:
         case other =>
           val gamma = computeGammaString(other)
           val current = gamma(idx)
-          loop(list.filter(_(idx) == current), idx+1)
+          loop(list.filter(_(idx) == current), idx + 1)
       loop(input, 0).head
     val oxygenRating = Integer.valueOf(oxygenRatingString, 2)
 
@@ -64,7 +63,7 @@ object Day3:
         case other =>
           val epsilon = not(computeGammaString(other))
           val current = epsilon(idx)
-          loop(list.filter(_(idx) == current), idx+1)
+          loop(list.filter(_(idx) == current), idx + 1)
       loop(input, 0).head
     val co2Rating = Integer.valueOf(co2String, 2)
 
