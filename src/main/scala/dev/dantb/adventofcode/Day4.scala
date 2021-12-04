@@ -26,6 +26,8 @@ object Day4:
     Utils.assertDay4InputRoundTrip(rawInput, input)
     playBingo(input)
 
+  def solvePart2: Int = playBingoToLose(Parsing.parseInput(Utils.readFromFile("day4-aoc.txt")))
+
   def playBingo(input: Input): Int =
     def numbersLoop(nums: List[Int], result: Result): Result = result match
       case Result.InProgress(boards) =>
@@ -70,6 +72,38 @@ object Day4:
         .collect { case b if !b.marked => b.num }
         .sum * complete.finalNumber
     case _ => 0
+
+  def playBingoToLose(input: Input): Int =
+    enum BoardResult:
+      case Complete(board: BingoBoard, finalNumber: Int)
+      case Incomplete(board: BingoBoard)
+
+    def boardsLoop(
+        boards: List[BingoBoard],
+        num: Int,
+        acc: List[BoardResult],
+      ): List[BoardResult] = boards match
+      case Nil => acc
+      case b :: bs =>
+        val newBoard = addToBoard(num, b)
+        if checkBoard(newBoard) then boardsLoop(bs, num, BoardResult.Complete(newBoard, num) :: acc)
+        else boardsLoop(bs, num, BoardResult.Incomplete(newBoard) :: acc)
+
+    val finalBoardToFinish = input
+      .bingoNumbers
+      .foldLeft((List.empty[Result.Complete], input.boards)) {
+        case ((completeBoards, incompleteBoards), num) =>
+          val results = boardsLoop(incompleteBoards, num, Nil)
+          val complete = results.collect[Result.Complete] {
+            case BoardResult.Complete(b, finalNumber) => Result.Complete(b, finalNumber)
+          }
+          val incomplete = results.collect { case BoardResult.Incomplete(b) => b }
+          (complete ++ completeBoards, incomplete)
+      }
+      ._1
+      .head
+
+    score(finalBoardToFinish)
 
   object Parsing:
     def parseInput(input: List[String]): Input =
