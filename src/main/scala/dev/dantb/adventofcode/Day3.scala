@@ -4,15 +4,9 @@ package adventofcode
 import scala.io.Source
 
 object Day3:
-  def solve = computePart1(readFromFile("day3-aoc.txt"))
-  def solvePart2 = computePart2(readFromFile("day3-aoc.txt"))
-  def solvePart2Sample = computePart2(readFromFile("day3-aoc-sample.txt"))
-
-  def readFromFile(fileName: String): List[String] =
-    val source = Source.fromResource(fileName)
-    val lines = source.getLines.toList
-    source.close
-    lines
+  def solve = computePart1(Utils.readFromFile("day3-aoc.txt"))
+  def solvePart2 = computePart2(Utils.readFromFile("day3-aoc.txt"))
+  def solvePart2Sample = computePart2(Utils.readFromFile("day3-aoc-sample.txt"))
 
   def computePart1(input: List[String]): Int =
     val gammaString = computeGammaString(input)

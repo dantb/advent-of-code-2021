@@ -7,11 +7,7 @@ object Day1:
   def solvePart1: Int = compute(readFromFile)
   def solvePart2: Int = computePart2(readFromFile)
 
-  def readFromFile: List[Int] =
-    val source = Source.fromResource("day1-aoc.txt")
-    val lines = source.getLines.toList.map(_.toInt)
-    source.close
-    lines
+  def readFromFile: List[Int] = Utils.readFromFile("day1-aoc.txt").map(_.toInt)
 
   def compute(input: List[Int]): Int =
     input

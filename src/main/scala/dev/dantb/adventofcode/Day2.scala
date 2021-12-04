@@ -15,11 +15,7 @@ object Day2:
     case "up" :: size :: Nil => Command.Up(size.nn.toInt)
     case other => throw new IllegalArgumentException(s"Invalid input $other")
 
-  def readFromFile: List[Command] =
-    val source = Source.fromResource("day2-aoc.txt")
-    val lines = source.getLines.toList.map(parseCommand)
-    source.close
-    lines
+  def readFromFile: List[Command] = Utils.readFromFile("day2-aoc.txt").map(parseCommand)
 
   object Part1:
     final case class Position(horiz: Int, depth: Int):
