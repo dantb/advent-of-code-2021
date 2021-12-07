@@ -3,7 +3,6 @@ package adventofcode
 
 import scala.io.Source
 import scala.util.chaining.scalaUtilChainingOps
-import dev.dantb.adventofcode.Day4.Parsing
 
 object Day5:
   case class Input(lines: List[Line]):
