@@ -12,8 +12,8 @@ object Day4:
   case class BingoNumber(
       num: Int,
       pos: Position,
-      marked: Boolean,
-    ):
+      marked: Boolean
+  ):
     def mark: BingoNumber = BingoNumber(num, pos, true)
 
   enum Result:
@@ -22,7 +22,7 @@ object Day4:
 
   def solve: Int =
     val rawInput = Utils.readFromFile("day4-aoc.txt")
-    val input = Parsing.parseInput(rawInput)
+    val input    = Parsing.parseInput(rawInput)
     Utils.assertDay4InputRoundTrip(rawInput, input)
     playBingo(input)
 
@@ -41,8 +41,8 @@ object Day4:
     def boardsLoop(
         boards: List[(BingoBoard, Int)],
         allBoards: Map[Int, BingoBoard],
-        num: Int,
-      ): Result = boards match
+        num: Int
+    ): Result = boards match
       case Nil => Result.InProgress(allBoards.values.toList)
       case (b, idx) :: bs =>
         val newBoard = addToBoard(num, b)
@@ -53,24 +53,19 @@ object Day4:
 
   def addToBoard(num: Int, board: BingoBoard): BingoBoard =
     def loop(nums: List[BingoNumber]): BingoBoard = nums match
-      case Nil => board
+      case Nil     => board
       case n :: ns => if n.num == num then board.mark(num) else loop(ns)
 
     loop(board.numbers.values.toList)
 
   def checkBoard(board: BingoBoard): Boolean =
-    val marked = board.numbers.values.filter(_.marked)
+    val marked     = board.numbers.values.filter(_.marked)
     val markedRows = marked.groupBy(_.pos.row).find(_._2.size == board.size).nonEmpty
     markedRows || marked.groupBy(_.pos.col).find(_._2.size == board.size).nonEmpty
 
   def score(result: Result): Int = result match
     case complete: Result.Complete =>
-      complete
-        .board
-        .numbers
-        .values
-        .collect { case b if !b.marked => b.num }
-        .sum * complete.finalNumber
+      complete.board.numbers.values.collect { case b if !b.marked => b.num }.sum * complete.finalNumber
     case _ => 0
 
   def playBingoToLose(input: Input): Int =
@@ -81,24 +76,22 @@ object Day4:
     def boardsLoop(
         boards: List[BingoBoard],
         num: Int,
-        acc: List[BoardResult],
-      ): List[BoardResult] = boards match
+        acc: List[BoardResult]
+    ): List[BoardResult] = boards match
       case Nil => acc
       case b :: bs =>
         val newBoard = addToBoard(num, b)
         if checkBoard(newBoard) then boardsLoop(bs, num, BoardResult.Complete(newBoard, num) :: acc)
         else boardsLoop(bs, num, BoardResult.Incomplete(newBoard) :: acc)
 
-    val finalBoardToFinish = input
-      .bingoNumbers
-      .foldLeft((List.empty[Result.Complete], input.boards)) {
-        case ((completeBoards, incompleteBoards), num) =>
-          val results = boardsLoop(incompleteBoards, num, Nil)
-          val complete = results.collect[Result.Complete] {
-            case BoardResult.Complete(b, finalNumber) => Result.Complete(b, finalNumber)
-          }
-          val incomplete = results.collect { case BoardResult.Incomplete(b) => b }
-          (complete ++ completeBoards, incomplete)
+    val finalBoardToFinish = input.bingoNumbers
+      .foldLeft((List.empty[Result.Complete], input.boards)) { case ((completeBoards, incompleteBoards), num) =>
+        val results = boardsLoop(incompleteBoards, num, Nil)
+        val complete = results.collect[Result.Complete] { case BoardResult.Complete(b, finalNumber) =>
+          Result.Complete(b, finalNumber)
+        }
+        val incomplete = results.collect { case BoardResult.Incomplete(b) => b }
+        (complete ++ completeBoards, incomplete)
       }
       ._1
       .head
@@ -110,7 +103,7 @@ object Day4:
       input match
         case nums :: _ :: firstBoardAndBelow =>
           val bingoNumbers = nums.split(',').map(_.toInt).toList
-          val size = splitRow(firstBoardAndBelow.head).size
+          val size         = splitRow(firstBoardAndBelow.head).size
           val boards = firstBoardAndBelow
             .appended("")
             .foldLeft((List.empty[BingoBoard], Map.empty[Int, BingoNumber], 0)) {
@@ -125,8 +118,7 @@ object Day4:
         case _ => Input(Nil, Nil)
 
     def parseLine(line: String, row: Int): Map[Int, BingoNumber] =
-      splitRow(line)
-        .zipWithIndex
+      splitRow(line).zipWithIndex
         .map((num, col) => num.toInt -> BingoNumber(num.toInt, Position(row, col), false))
         .toMap
 

@@ -11,29 +11,28 @@ object Day2:
 
   def parseCommand(input: String): Command = input.split(" ").nn.toList match
     case "forward" :: size :: Nil => Command.Forward(size.nn.toInt)
-    case "down" :: size :: Nil => Command.Down(size.nn.toInt)
-    case "up" :: size :: Nil => Command.Up(size.nn.toInt)
-    case other => throw new IllegalArgumentException(s"Invalid input $other")
+    case "down" :: size :: Nil    => Command.Down(size.nn.toInt)
+    case "up" :: size :: Nil      => Command.Up(size.nn.toInt)
+    case other                    => throw new IllegalArgumentException(s"Invalid input $other")
 
   def readFromFile: List[Command] = Utils.readFromFile("day2-aoc.txt").map(parseCommand)
 
   object Part1:
     final case class Position(horiz: Int, depth: Int):
-      def answer: Int = horiz * depth
-      def down(steps: Int): Position = Position(horiz, depth + steps)
-      def up(steps: Int): Position = Position(horiz, depth - steps)
+      def answer: Int                   = horiz * depth
+      def down(steps: Int): Position    = Position(horiz, depth + steps)
+      def up(steps: Int): Position      = Position(horiz, depth - steps)
       def forward(steps: Int): Position = Position(horiz + steps, depth)
 
     def solve: Int = compute(readFromFile)
 
     def compute(input: List[Command]): Int =
       input
-        .foldLeft(Position(0, 0)) {
-          case (acc, next) =>
-            next match
-              case Command.Forward(size) => acc.forward(size)
-              case Command.Down(size) => acc.down(size)
-              case Command.Up(size) => acc.up(size)
+        .foldLeft(Position(0, 0)) { case (acc, next) =>
+          next match
+            case Command.Forward(size) => acc.forward(size)
+            case Command.Down(size)    => acc.down(size)
+            case Command.Up(size)      => acc.up(size)
         }
         .answer
 
@@ -41,22 +40,21 @@ object Day2:
     final case class Position(
         horiz: Int,
         depth: Int,
-        aim: Int,
-      ):
-      def answer: Int = horiz * depth
-      def down(steps: Int): Position = Position(horiz, depth, aim + steps)
-      def up(steps: Int): Position = Position(horiz, depth, aim - steps)
+        aim: Int
+    ):
+      def answer: Int                   = horiz * depth
+      def down(steps: Int): Position    = Position(horiz, depth, aim + steps)
+      def up(steps: Int): Position      = Position(horiz, depth, aim - steps)
       def forward(steps: Int): Position = Position(horiz + steps, depth + (aim * steps), aim)
 
     def solve: Int = compute(readFromFile)
 
     def compute(input: List[Command]): Int =
       input
-        .foldLeft(Position(0, 0, 0)) {
-          case (acc, next) =>
-            next match
-              case Command.Forward(size) => acc.forward(size)
-              case Command.Down(size) => acc.down(size)
-              case Command.Up(size) => acc.up(size)
+        .foldLeft(Position(0, 0, 0)) { case (acc, next) =>
+          next match
+            case Command.Forward(size) => acc.forward(size)
+            case Command.Down(size)    => acc.down(size)
+            case Command.Up(size)      => acc.up(size)
         }
         .answer

@@ -9,7 +9,7 @@ import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 
 object Day6:
-  def solve: Long = compute(Parsing.parseInput(Utils.readFromFile("day6.txt")), 80)
+  def solve: Long      = compute(Parsing.parseInput(Utils.readFromFile("day6.txt")), 80)
   def solvePart2: Long = compute(Parsing.parseInput(Utils.readFromFile("day6.txt")), 256)
   def solveSample: Long =
     compute(Parsing.parseInput(Utils.readFromFile("day6-sample.txt")), 80)

@@ -11,9 +11,8 @@ object Day1:
 
   def compute(input: List[Int]): Int =
     input
-      .foldLeft((0, input(0))) {
-        case ((sum, previous), next) =>
-          if next > previous then (sum + 1, next) else (sum, next)
+      .foldLeft((0, input(0))) { case ((sum, previous), next) =>
+        if next > previous then (sum + 1, next) else (sum, next)
       }
       ._1
 
@@ -31,15 +30,15 @@ object Day1:
   def solveAlt: Int = altSolution(readFromFile)
   def altSolution(input: List[Int]): Int =
     // Array might be better?
-    val size = input.size
-    var sum = 0
-    var idx = 3
-    var first = input(0)
+    val size   = input.size
+    var sum    = 0
+    var idx    = 3
+    var first  = input(0)
     var second = input(1)
-    var third = input(2)
+    var third  = input(2)
     var window = first + second + third
-    while (idx < size)
-      val next = input(idx)
+    while idx < size do
+      val next      = input(idx)
       val newWindow = (window - first) + next
       if newWindow > window then sum = sum + 1
       first = second

@@ -11,11 +11,11 @@ object Day5:
   case class Position(x: Int, y: Int)
   case class Line(start: Position, end: Position):
     def isHorizontal: Boolean = start.y == end.y
-    def isVertical: Boolean = start.x == end.x
-    def isDiagonal: Boolean = !isHorizontal && !isVertical
+    def isVertical: Boolean   = start.x == end.x
+    def isDiagonal: Boolean   = !isHorizontal && !isVertical
 
-  def solve: Int = compute(Parsing.parseInput(Utils.readFromFile("day5-aoc.txt")))
-  def solvePart2: Int = computePart2(Parsing.parseInput(Utils.readFromFile("day5-aoc.txt")))
+  def solve: Int       = compute(Parsing.parseInput(Utils.readFromFile("day5-aoc.txt")))
+  def solvePart2: Int  = computePart2(Parsing.parseInput(Utils.readFromFile("day5-aoc.txt")))
   def solveSample: Int = computePart2(Parsing.parseInput(Utils.readFromFile("day5-aoc-sample.txt")))
 
   def compute(input: Input): Int =
@@ -32,18 +32,15 @@ object Day5:
     }
 
   def positionsTouchedBy(line: Line): List[Position] =
-    if line.isHorizontal then
-      generateBetween(line.start.x, line.end.x).map(Position(_, line.start.y))
-    else if line.isVertical then
-      generateBetween(line.start.y, line.end.y).map(Position(line.start.x, _))
+    if line.isHorizontal then generateBetween(line.start.x, line.end.x).map(Position(_, line.start.y))
+    else if line.isVertical then generateBetween(line.start.y, line.end.y).map(Position(line.start.x, _))
     else positionsTouchedByDiagonal(line)
 
   def positionsTouchedByDiagonal(line: Line): List[Position] =
     val yStep: Int = if line.start.y < line.end.y then 1 else -1
     generateBetween(line.start.x, line.end.x)
-      .foldLeft((List.empty[Position], line.start.y)) {
-        case ((acc, y), x) =>
-          (Position(x, y) :: acc, y + yStep)
+      .foldLeft((List.empty[Position], line.start.y)) { case ((acc, y), x) =>
+        (Position(x, y) :: acc, y + yStep)
       }
       ._1
 
