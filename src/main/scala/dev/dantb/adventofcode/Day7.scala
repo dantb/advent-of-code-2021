@@ -55,7 +55,9 @@ object Day7:
           val totalFuel       = fuelToThisPoint + fuelForThisStep
           val newTotalFuelByPosition =
             totalFuelByPosition.updatedWith(nextCrab.position)(_.map(_ + totalFuel).orElse(Some(totalFuel)))
-          val newFuelCostByPosition = fuelCostByPosition.map((pos, cost) => (pos, cost + 1)).updated(nextCrab, 1)
+          val newFuelCostByPosition = // no need to track fuel cost for positions with no crabs in
+            if nextCrab.numberOfCrabs == 0 then fuelCostByPosition.map((pos, cost) => (pos, cost + 1))
+            else fuelCostByPosition.map((pos, cost) => (pos, cost + 1)).updated(nextCrab, 1)
           (newTotalFuelByPosition, newFuelCostByPosition, totalFuel, nextCrab)
       }
       ._1
