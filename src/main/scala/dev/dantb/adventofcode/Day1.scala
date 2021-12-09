@@ -17,15 +17,8 @@ object Day1:
       ._1
 
   def computePart2(input: List[Int]): Int =
-    input
-      .drop(3)
-      .foldLeft((0, input.take(3).sum, input(0), input(1), input(2))) {
-        case ((sum, prevSum, minus3, minus2, minus1), next) =>
-          val newSum = (prevSum + next) - minus3
-          if newSum > prevSum then (sum + 1, newSum, minus2, minus1, next)
-          else (sum, newSum, minus2, minus1, next)
-      }
-      ._1
+    val slidingWindowSize = 3
+    input.sliding(slidingWindowSize + 1).count(window => window(slidingWindowSize) > window(0))
 
   def solveAlt: Int = altSolution(readFromFile)
   def altSolution(input: List[Int]): Int =
