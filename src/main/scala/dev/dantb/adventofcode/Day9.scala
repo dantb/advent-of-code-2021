@@ -78,7 +78,7 @@ object Day9:
   case class RowCandidate(col: Int, value: Int)
   extension (rowCand: RowCandidate) def toCandidate(row: Int) = Candidate(row, rowCand.col, rowCand.value)
   case class Row(numbers: Array[Int])
-  
+
   object Parsing:
     def parseInput(input: List[String]): Array[Row] =
       input.map(line => Row(line.map(_.toString.toInt).toArray)).toArray
