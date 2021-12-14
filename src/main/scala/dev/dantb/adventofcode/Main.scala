@@ -51,3 +51,7 @@ package adventofcode
   println(s"Day 11, part 1 sample: ${Day11.solveSample}")
   println(s"Day 11, part 1: ${Day11.solvePart1}")
   println(s"Day 11, part 2: ${Day11.solvePart2}")
+
+  println(s"Day 14, part 1 sample: ${Day14.solveSample}")
+  println(s"Day 14, part 1: ${Day14.solvePart1}")
+  println(s"Day 14, part 2 sample: ${Day14.solvePart2Sample}")
